@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchTrendingMovies } from "@/utils/trending";
 import Popular from "@/components/Popular";
 import FreeToWatch from "@/components/FreeToWatch";
+import Loading from "@/components/Loading";
 
 export default function Home() {
   const [trendingmovie, setTrendingMovie] = useState([]);
@@ -65,7 +66,7 @@ export default function Home() {
       <section className="m-2 mt-8">
         <div className="title w-[90vw] text-sm md:text-md md:w-[80vw] mx-auto flex md:items-center gap-3 md:gap-10 md:flex-row flex-col">
           <p className="mx-2 font-semibold text-black text-2xl">Trending Movies</p>
-          <div className="flex gap-4  w-fit">
+          <div className="flex gap-4  w-fit ">
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
         ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white"} 
@@ -94,9 +95,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex w-[90vw]  md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2">
+        <div className="flex w-[90vw]  md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2 overflow-y-hidden">
           {loading ? (
-            <div>Loading movies...</div>
+            <Loading />
           ) : error ? (
             <div className="text-red-500">{error}</div>
           ) : trendingmovie.length > 0 ? (
@@ -142,7 +143,7 @@ export default function Home() {
         </div>
         <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2">
           {loading ? (
-            <div>Loading shows...</div>
+            <Loading />
           ) : error ? (
             <div className="text-red-500">{error}</div>
           ) : trendingtv.length > 0 ? (

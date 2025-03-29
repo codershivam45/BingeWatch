@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import { fetchStreamingMovies, fetchForRentMovies, fetchOnTVMovies, fetchInTheatersMovies } from "@/utils/popular";
+import Loading from "./Loading";
 
 const Popular = () => {
     const [isStreaming, setisStreaming] = useState(true);
@@ -78,7 +79,7 @@ const Popular = () => {
             {/* Display Movies */}
             <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto overflow-y-hidden m-4 gap-2">
                 {loading ? (
-                    <div>Loading Shows...</div>
+                    <Loading/>
                 ) : data.length > 0 ? (
                     data.map((item, index) => <Card key={index} item={item} />)
                 ) : (

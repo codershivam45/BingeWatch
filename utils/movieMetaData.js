@@ -1,16 +1,19 @@
-import { fetchTvDetails } from './tvDetails';
+import { fetchMovieDetails } from './movieDetails';
 
-export async function generateTvMetadata(params) {
-    const id = params.slug.split('-')[0]; // Extract the TV show ID from the slug
-    const tvShow = await fetchTvDetails(id);
+export async function generateMovieMetadata(params) {
+    const param=await params
+    console.log(param)
+    const id = params.id?.split('-')[0]; // Extract the movie ID from the URL parameter
+    const movie = await fetchMovieDetails(id);
 
     return {
-        title: `${tvShow.name} (${tvShow.first_air_date.slice(0, 4)}) - BingeWatch`, // Title with year
-        description: tvShow.overview, // TV show overview
+        title: `${movie.title ? movie.title : ''} ${movie.release_date ? (movie.release_date.slice(0, 4)) :''}  BingeWatch`, // Movie title with year
+        description: movie.overview, // Movie overview
         openGraph: {
-            title: `${tvShow.name} (${tvShow.first_air_date.slice(0, 4)}) - BingeWatch`, // OpenGraph title
-            description: tvShow.overview, // OpenGraph description
-            images: [`https://image.tmdb.org/t/p/original/${tvShow.poster_path}`], // OpenGraph image (poster)
+            title: `${movie.title} (${movie.release_date?.slice(0, 4)}) - BingeWatch`, // OpenGraph title
+            description: movie.overview, // OpenGraph description
+            images: [`https://image.tmdb.org/t/p/original/${movie.poster_path}`], // OpenGraph image (poster)
         },
     };
 }
+

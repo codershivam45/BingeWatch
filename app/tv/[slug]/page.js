@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { fetchTvDetails, fetchTvCast } from '@/utils/tvDetails'
 import Score from '@/components/Score'
 import PersonCard from '@/components/PersonCard'
+import Loading from '@/components/Loading'
 
 const TvDetails = ({ params }) => {
     const { slug } = React.use(params)
@@ -51,9 +52,7 @@ const TvDetails = ({ params }) => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-xl font-semibold">Loading...</p>
-            </div>
+          <Loading />
         )
     }
 
@@ -74,7 +73,7 @@ const TvDetails = ({ params }) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent opacity-80"></div>
 
                         <div className="relative z-10 flex flex-col md:flex-row gap-10">
-                            <div className="image">
+                            <div className="image flex justify-center items-center">
                                 <Image
                                     alt="poster"
                                     className="rounded-xl object-cover"

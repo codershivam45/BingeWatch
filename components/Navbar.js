@@ -164,7 +164,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Dropdown */}
             {showHam && (
-                <div ref={menuRef} className="z-10 fixed top-[4.9rem] left-0 h-screen bg-gradient-to-r from-[#8e44ad] to-[#3498db] shadow-lg border-none p-4 w-[80%]">
+                <div ref={menuRef} className="z-50 fixed top-[4.9rem] left-0 h-screen bg-gradient-to-r from-[#8e44ad] to-[#3498db] shadow-lg border-none p-4 w-[80%]">
                     <ul className="flex flex-col gap-4">
                         {['Movies', 'TV Shows', 'People', 'More', 'Discussion', 'Leaderboard'].map((item, index) => (
                             <li key={index} className="cursor-pointer hover:text-gray-300 text-[#f5f5f5] text-xl">

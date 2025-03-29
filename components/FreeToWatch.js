@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import { fetchFreeMoviesOrTV } from '@/utils/freeToWatch';
+import Loading from './Loading';
 
 const FreeToWatch = () => {
     const [isMovie, setisMovie] = useState(true);
@@ -52,7 +53,7 @@ const FreeToWatch = () => {
 
             <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2">
                 {loading ? (
-                    <div>Loading Shows...</div>
+                    <Loading/>
                 ) : error ? (
                     <div className="text-red-500">{error}</div>
                 ) : data.length > 0 ? (

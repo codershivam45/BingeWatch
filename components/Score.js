@@ -44,7 +44,7 @@ const Score = ({ score }) => {
             </svg>
 
             {/* Score Text */}
-            <span className="absolute text-white text-sm font-bold">{progress}%</span>
+            <span className="absolute text-white text-sm font-bold">{progress.toFixed(0)}%</span>
         </div>
     );
 

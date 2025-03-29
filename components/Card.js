@@ -11,9 +11,9 @@ const Card = ({ item }) => {
     }
     useEffect(() => {
         if (item?.release_date) {
-            setlink(`/movie/${item.id}-${(item.title).replaceAll(' ','-')}`)
+            setlink(`/movie/${item.id}-${(item.title)?.replaceAll(' ','-')}`)
         } else {
-            setlink(`/tv/${item.id}-${(item.name).replaceAll(' ', '-')}`)
+            setlink(`/tv/${item.id}-${(item.name)?.replaceAll(' ', '-')}`)
         }
     },[] )
     

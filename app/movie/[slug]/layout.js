@@ -1,13 +1,12 @@
-import { generateTvMetadata } from '@/utils/tvMetaDetails';
-
+import { generateMovieMetadata } from "@/utils/movieMetaData";
 // Generate metadata from the utility file
 export async function generateMetadata({ params }) {
-    return await generateTvMetadata(params);
+    return await generateMovieMetadata(params);
 }
 
-const TvLayout = ({ children }) => {
+const MovieLayout = ({ children }) => {
     return <>{children}</>;
 };
 
-export default TvLayout;
+export default MovieLayout;
 
