@@ -42,34 +42,34 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main className="bg-black text-white">
       {/* Search Bar */}
-      <div className="searchBar w-full flex p-4 bg-white border border-bg-gray-300 sm:justify-center sticky top-0">
+      <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0">
         <Image alt="search" src="/search.png" width={24} height={24} />
-        <input type="text" placeholder=" Search for your favorite movies, shows, or actors " className="text-lg focus:outline-none w-[90%]" />
+        <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="text-lg focus:outline-none w-[90%] bg-transparent text-white placeholder-gray-400" />
       </div>
 
       {/* Welcome Section */}
-      <section className="welcome w-[100vw] h-[50vh] text-white bg-cover bg-center bg-[url('/welcome.jpg')] flex flex-col justify-between py-12 sm:py-16">
-        <div className="w-[90vw] lg:w-[80vw] ml-[5vw] lg:ml-[10vw] flex flex-col gap-1">
+      <section className="welcome w-[100vw] h-[50vh] text-white bg-top  bg-[url('/hero.png')] flex flex-col justify-between py-12 sm:py-16">
+        <div className="w-[90vw] lg:w-[80vw] ml-[5vw] lg:ml-[10vw] flex flex-col gap-1 text-lime-100 ">
           <div className="text-5xl font-bold">Welcome</div>
           <div className="text-xl font-semibold">to the world of movies and shows.</div>
           <div className="text-xl font-semibold">Here you can search for your favorite movies, shows.</div>
         </div>
-        <div className="w-[90vw] lg:w-[80vw] rounded-full ml-[5vw] lg:ml-[10vw] bg-white flex justify-between">
-          <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="p-4 rounded-full w-[70vw] text-black focus:outline-none" />
-          <button className="px-8 rounded-full bg-red-700 border border-white">Search</button>
+        <div className="w-[90vw] lg:w-[80vw] rounded-full ml-[5vw] lg:ml-[10vw] bg-gray-800 flex justify-between">
+          <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="p-4 rounded-full w-[70vw] bg-gray-800 text-white focus:outline-none" />
+          <button className="px-8 rounded-full bg-red-700  ">Search</button>
         </div>
       </section>
 
       {/* Trending Movies Section */}
       <section className="m-2 mt-8">
         <div className="title w-[90vw] text-sm md:text-md md:w-[80vw] mx-auto flex md:items-center gap-3 md:gap-10 md:flex-row flex-col">
-          <p className="mx-2 font-semibold text-black text-2xl">Trending Movies</p>
+          <p className="mx-2 font-semibold text-white text-2xl">Trending Movies</p>
           <div className="flex gap-4  w-fit ">
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
-        ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white"} 
+        ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
         text-sm md:text-xs`}
               onClick={() => {
                 if (isWeek) {
@@ -82,7 +82,7 @@ export default function Home() {
             </div>
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
-        ${isWeek ? "bg-red-600 text-white scale-105" : "bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white"} 
+        ${isWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
         text-sm md:text-xs`}
               onClick={() => {
                 if (!isWeek) {
@@ -111,11 +111,11 @@ export default function Home() {
       {/* Trending TV Shows Section */}
       <section>
         <div className="title w-[90vw]  text-sm md:text-md md:w-[80vw] mx-auto flex md:items-center gap-3 md:gap-10 md:mt-8 md:flex-row flex-col">
-          <p className="mx-2 font-semibold text-black text-2xl">Trending Shows</p>
+          <p className="mx-2 font-semibold text-white text-2xl">Trending Shows</p>
           <div className="flex gap-4 w-fit">
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
-        ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white"} 
+        ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
         text-sm md:text-xs`}
               onClick={() => {
                 if (isTVWeek) {
@@ -128,7 +128,7 @@ export default function Home() {
             </div>
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
-        ${isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-200 text-gray-700 hover:bg-red-500 hover:text-white"} 
+        ${isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
         text-sm md:text-xs`}
               onClick={() => {
                 if (!isTVWeek) {
@@ -153,6 +153,7 @@ export default function Home() {
           )}
         </div>
       </section>
+
       {/* Other Sections */}
       <Popular />
       <FreeToWatch />

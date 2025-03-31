@@ -51,13 +51,11 @@ const TvDetails = ({ params }) => {
     }, [id])
 
     if (loading) {
-        return (
-          <Loading />
-        )
+        return <Loading />
     }
 
     return (
-        <div>
+        <div className="bg-gray-900 text-white">
             {tvShow && (
                 <div>
                     <section
@@ -84,7 +82,7 @@ const TvDetails = ({ params }) => {
                             </div>
                             <div className="text flex flex-col mt-2">
                                 <h1 className="text-3xl font-semibold">
-                                    {tvShow.name} <span className="text-gray-500">{` (${tvShow.first_air_date.slice(0, 4)})`}</span>
+                                    {tvShow.name} <span className="text-gray-400">{` (${tvShow.first_air_date.slice(0, 4)})`}</span>
                                 </h1>
                                 <p>
                                     <span className="release-date">
@@ -103,7 +101,7 @@ const TvDetails = ({ params }) => {
                                     <p className="text-lg italic text-neutral-400">{tvShow.tagline}</p>
                                 </div>
                                 <h2 className="text-2xl my-2">Overview</h2>
-                                <p>{tvShow.overview}</p>
+                                <p className="text-neutral-300">{tvShow.overview}</p>
                             </div>
                         </div>
                     </section>
@@ -115,7 +113,7 @@ const TvDetails = ({ params }) => {
                                 <h2 className="text-2xl my-4 font-semibold">Top Billed Cast</h2>
 
                                 {/* Cast Row */}
-                                <div className="flex items-center w-[90vw] overflow-x-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 gap-10">
+                                <div className="flex items-center w-[90vw] overflow-x-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-700 gap-10">
                                     {(showFullCast ? cast : cast.slice(0, 10)).map((item, index) => (
                                         <PersonCard key={index} item={item} />
                                     ))}

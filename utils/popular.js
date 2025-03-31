@@ -3,9 +3,9 @@
 
 // Fetch Streaming Movies
 export async function fetchStreamingMovies() {
-    const page = Math.floor(Math.random() * 50) + 1; // Generates a random number between 1 and 50
+    // const page = Math.floor(Math.random() * 50) + 1; // Generates a random number between 1 and 50
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=${page}&with_watch_monetization_types=flatrate`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discover/movie?api_key=${process.env.API_KEY}&language=en-US&with_watch_monetization_types=flatrate`);
     const data = await res.json();
     return data;
 }

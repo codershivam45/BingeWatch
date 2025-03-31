@@ -29,7 +29,7 @@
               <Image alt="poster" className="rounded-xl object-cover" width={130} height={130} src={item.profile_path ? `https://image.tmdb.org/t/p/original/${item.profile_path}` : '/no-avatar.png'}></Image>
             </div>
             <div className="text mx-2 my-1 ">
-              <div className='title font-bold overflow-auto'>
+              <div className='title font-bold overflow-auto text-white'>
                 {item.name}
               </div>
               <div className='title text-gray-700 overflow-auto'>

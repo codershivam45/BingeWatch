@@ -7,8 +7,7 @@ import PersonCard from '@/components/PersonCard'
 import Loading from '@/components/Loading'
 
 const MovieDetails = ({ params }) => {
-  // const { slug } = params
-  const {slug}= React.use(params)
+  const { slug } = React.use(params)
   const id = slug.split('-')[0]
 
   const [movie, setMovie] = useState(null)
@@ -52,21 +51,19 @@ const MovieDetails = ({ params }) => {
   }, [id])
 
   if (loading) {
-    return (
-      <Loading/>
-    )
+    return <Loading />
   }
 
   return (
-    <div>
+    <div className="bg-gray-900 text-white">
       {movie && (
         <div>
           <section
-            className="relative flex gap-10 pl-[5vw] pr-[5vw] p-10 text-white"
+            className="relative flex gap-10 pl-[5vw] pr-[5vw] p-10  text-white"
             style={{
               backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'top 25% center',
               backgroundBlendMode: 'multiply',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
             }}
@@ -85,7 +82,7 @@ const MovieDetails = ({ params }) => {
               </div>
               <div className="text flex flex-col mt-2">
                 <h1 className="text-3xl font-semibold">
-                  {movie.title} <span className="text-gray-500">{` (${movie.release_date.slice(0, 4)})`}</span>
+                  {movie.title} <span className="text-gray-400">{` (${movie.release_date.slice(0, 4)})`}</span>
                 </h1>
                 <p>
                   <span className="release-date">
@@ -104,19 +101,19 @@ const MovieDetails = ({ params }) => {
                   <p className="text-lg italic text-neutral-400">{movie.tagline}</p>
                 </div>
                 <h2 className="text-2xl my-2">Overview</h2>
-                <p>{movie.overview}</p>
+                <p className="text-neutral-300">{movie.overview}</p>
               </div>
             </div>
           </section>
 
           {/* Cast Section */}
-          { cast.length > 0 && (
-            <section className="cast px-[5vw] my-4">
+          {cast.length > 0 && (
+            <section className="cast px-[5vw] mt-4">
               <div className="topcast">
                 <h2 className="text-2xl my-4 font-semibold">Top Billed Cast</h2>
 
                 {/* Cast Row */}
-                <div className="flex items-center w-[90vw] overflow-x-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 gap-10">
+                <div className="flex items-center w-[90vw] overflow-x-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-700 gap-10">
                   {(showFullCast ? cast : cast.slice(0, 10)).map((item, index) => (
                     <PersonCard key={index} item={item} />
                   ))}
