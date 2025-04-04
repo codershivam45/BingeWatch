@@ -32,7 +32,7 @@
               <div className='title font-bold overflow-auto text-white'>
                 {item.name}
               </div>
-              <div className='title text-gray-700 overflow-auto'>
+              <div className='title text-gray-400 overflow-auto'>
                 {item.character}
               </div>
             </div>

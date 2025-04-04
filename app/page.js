@@ -28,7 +28,7 @@ export default function Home() {
         setTrendingTV(data.results);
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
+      console.log("Error fetching data:", err);
       setError("Failed to load data. Please try again later.");
     } finally {
       setLoading(false);
@@ -45,7 +45,10 @@ export default function Home() {
     <main className="bg-black text-white">
       {/* Search Bar */}
       <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0">
-        <Image alt="search" src="/search.png" width={24} height={24} />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="16.5" y1="16.5" x2="22" y2="22" />
+        </svg>
         <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="text-lg focus:outline-none w-[90%] bg-transparent text-white placeholder-gray-400" />
       </div>
 
@@ -69,7 +72,7 @@ export default function Home() {
           <div className="flex gap-4  w-fit ">
             <div
               className={`py-2 px-4 rounded-full cursor-pointer flex items-center transition-all duration-300 
-        ${!isTVWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
+        ${!isWeek ? "bg-red-600 text-white scale-105" : "bg-gray-700 text-gray-400 hover:bg-red-500 hover:text-white"} 
         text-sm md:text-xs`}
               onClick={() => {
                 if (isWeek) {
@@ -95,7 +98,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex w-[90vw]  md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2 overflow-y-hidden">
+        <div className="flex w-[90vw]  md:w-[80vw] mx-auto overflow-x-auto m-4 gap-5 overflow-y-hidden">
           {loading ? (
             <Loading />
           ) : error ? (
@@ -141,7 +144,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto m-4 gap-2">
+        <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto m-4 gap-5">
           {loading ? (
             <Loading />
           ) : error ? (

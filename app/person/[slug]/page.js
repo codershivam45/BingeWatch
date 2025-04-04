@@ -37,7 +37,7 @@ const Person = ({ params }) => {
 
   return (
     <main className="min-h-screen bg-gray-900 text-white">
-      <div className="mx-auto w-[90vw] overflow-hidden flex flex-col md:flex-row gap-8 p-6">
+      <div className="mx-auto w-[95vw] md:w-[85vw] overflow-hidden flex flex-col md:flex-row gap-8 p-6">
         {/* Profile Image */}
         <div className="flex items-center justify-center md:flex-shrink-0 md:items-start md:justify-start">
           <Image

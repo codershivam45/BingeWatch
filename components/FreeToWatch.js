@@ -51,7 +51,7 @@ const FreeToWatch = () => {
                 </div>
             </div>
 
-            <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto overflow-y-hidden m-4 gap-2">
+            <div className="flex w-[90vw] md:w-[80vw] mx-auto overflow-x-auto overflow-y-hidden m-4 gap-5">
                 {loading ? (
                     <Loading />
                 ) : error ? (

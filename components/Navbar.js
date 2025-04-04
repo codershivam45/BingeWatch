@@ -30,7 +30,7 @@ const Navbar = () => {
     return (
         <div className="bg-gray-900 shadow-md mx-auto">
             {/* Desktop Navbar */}
-            <div className="hidden md:flex p-5 text-white justify-between items-center w-[80%] mx-auto h-20">
+            <div className="hidden xl:flex p-5 text-white justify-between items-center w-[80%] mx-auto h-20">
                 <div className="Link flex gap-10 items-center">
                     <Link href="/">
                         <div className="logo font-extrabold text-4xl sm:text-5xl text-teal-500 hover:text-teal-700 transition-colors duration-300 ease-in-out transform-gpu hover:scale-105 hover:translate-y-1 drop-shadow-xl">
@@ -147,7 +147,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Navbar */}
-            <div className="flex md:hidden p-5 text-white justify-between items-center px-5 h-20">
+            <div className="flex xl:hidden p-5 text-white justify-between items-center px-5 h-20">
                 {/* Hamburger Menu */}
                 <div className="hamburger" onClick={() => setShowHam(!showHam)}>
                     {/* <Image src="/hamburger.png" alt="line" width={30} height={30} /> */}
@@ -180,7 +180,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Dropdown */}
             {showHam && (
-                <div ref={menuRef} className="z-50 fixed top-[4.9rem] left-0 h-screen bg-gray-900 shadow-lg border-none p-4 w-[80%]">
+                <div ref={menuRef} className=" xl:hidden z-50 fixed top-[4.9rem] left-0 h-screen bg-gray-900 shadow-lg border-none p-4 w-[80%]">
                     <ul className="flex-col space-y-2 items-center">
                         {/* Movies Dropdown */}
                         <li
@@ -191,7 +191,7 @@ const Navbar = () => {
                             <button>Movies</button>
                             <div className="relative">
                                 {dropdownMovie && (
-                                    <div className="z-50 py-1 text-lg text-gray-300 rounded-lg transition-all duration-300">
+                                    <div className="z-50 py-1 text-lg text-gray-300 rounded-lg transition-all duration-300 ">
                                         <ul className="flex flex-col">
                                             {['Popular', 'Now Playing', 'Upcoming', 'Top Rated'].map((item, index) => (
                                                 <Link href={`/movies/${item.split(' ')[item.split(' ').length - 1].toLocaleLowerCase()}`} key={index} className="px-4 py-1">
