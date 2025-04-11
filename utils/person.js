@@ -61,3 +61,42 @@ export async function fetchPersonCredits(id) {
         return null; // Return null if credits can't be fetched
     }
 }
+
+export async function fetchPopularPersons(page){
+
+        try{
+            const res=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/person/popular?api_key=${process.env.API_KEY}&page=${page}`)
+            if(!res.ok){
+                throw new Error(`Failed to fetch popular persons . Status : ${res.status}`)
+            }
+
+            const data=await res.json();
+            if(!data || !data.results){
+                throw new Error("No popular persons found.")
+                }
+                return {data :data.results ,total_pages:data.total_pages}
+        }catch(error){
+            console.log('Error Fetching popular persons' , error.message);
+        }
+
+}
+
+export const fetchPersonsByName = async (name, page) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search/person?api_key=${process.env.API_KEY}&query=${encodeURIComponent(name)}&page=${page}`);
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch persons by name. Status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data || !data.results) {
+            throw new Error("No persons found.");
+        }
+
+        return { data: data.results, total_pages: data.total_pages };
+    } catch (error) {
+        console.log('Error fetching persons by name:', error.message);
+    }
+};
+

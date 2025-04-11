@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 import { fetchTrendingMovies } from "@/utils/trending";
@@ -44,7 +43,7 @@ export default function Home() {
   return (
     <main className="bg-black text-white">
       {/* Search Bar */}
-      <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0">
+      <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0 z-30">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="16.5" y1="16.5" x2="22" y2="22" />

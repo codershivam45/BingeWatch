@@ -1,276 +1,197 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
-    const [dropdownMovie, setDropdownMovie] = useState(false)
-    const [dropdownShows, setDropdownShows] = useState(false)
-    const [dropdownPeople, setDropdownPeople] = useState(false)
-    const [dropdownMore, setDropdownMore] = useState(false)
-    const [showHam, setShowHam] = useState(false)
-
+    const [activeDropdown, setActiveDropdown] = useState(null)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const menuRef = useRef(null)
+    const pathname = usePathname()
 
-    // Close the menu when clicking outside
+    // Menu items data
+    const menuItems = {
+        Movies: ['Popular', 'Now Playing', 'Upcoming', 'Top Rated'],
+        'TV Shows': ['Popular', 'Airing Today', 'On TV', 'Top Rated'],
+        People: ['Popular'],
+        More: ['Discussion', 'Leaderboard', 'Support']
+    }
+
+    // Close menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setShowHam(false)
+                setActiveDropdown(null)
+                setIsMobileMenuOpen(false)
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside)
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
+        return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
+    // Toggle dropdown
+    const toggleDropdown = (item) => {
+        setActiveDropdown(activeDropdown === item ? null : item)
+    }
+
+    // Toggle mobile menu
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen)
+    }
+
+    // Generate link path
+    const getLinkPath = (category, item) => {
+        const basePath = category.toLowerCase().replace(' ', '')
+        const itemPath = item.toLowerCase().replace(' ', '-')
+        return `/${basePath}/${itemPath}`
+    }
+
+    // Check if current page is home
+    const isHomePage = pathname === '/'
+
     return (
-        <div className="bg-gray-900 shadow-md mx-auto">
+        <nav className={`w-full bg-gray-900 shadow-lg z-[9999] ${!isHomePage ? 'sticky top-0' : ''}`}>
             {/* Desktop Navbar */}
-            <div className="hidden xl:flex p-5 text-white justify-between items-center w-[80%] mx-auto h-20">
-                <div className="Link flex gap-10 items-center">
-                    <Link href="/">
-                        <div className="logo font-extrabold text-4xl sm:text-5xl text-teal-500 hover:text-teal-700 transition-colors duration-300 ease-in-out transform-gpu hover:scale-105 hover:translate-y-1 drop-shadow-xl">
+            <div className="hidden lg:flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
+                {/* Logo */}
+                <div className='flex items-center space-x-8'>
+                    <Link href="/" className="flex-shrink-0">
+                        <span className="text-4xl font-bold text-white hover:text-teal-400 transition-colors">
                             BingeWatch
-                        </div>
+                        </span>
                     </Link>
-                    <ul className="flex gap-6 items-center">
-                        {/* Movies Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownMovie(true)}
-                            onMouseOut={() => setDropdownMovie(false)}
-                            className="relative cursor-pointer hover:text-gray-300"
-                        >
-                            <button>Movies</button>
-                            <div className="relative">
-                                {dropdownMovie && (
-                                    <div className="absolute z-50 py-1 bg-gray-800 border border-slate-600 text-white rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            {['Popular', 'Now Playing', 'Upcoming', 'Top Rated'].map((item, index) => (
-                                                <Link href={`/movies/${item.split(' ')[item.split(' ').length - 1].toLocaleLowerCase()}`} key={index} className="hover:bg-gray-700 px-4 py-1">
-                                                    <li>{item}</li>
-                                                </Link>
+
+                    {/* Desktop Menu */}
+                    <div className="flex items-center space-x-8">
+                        {Object.keys(menuItems).map((item) => (
+                            <div key={item} className="relative">
+                                <button
+                                    onClick={() => toggleDropdown(item)}
+                                    className="text-white hover:text-teal-400 transition-colors"
+                                >
+                                    {item}
+                                </button>
+                                {activeDropdown === item && (
+                                    <div className="absolute top-full left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl z-[9999]">
+                                        <ul className="py-2">
+                                            {menuItems[item].map((subItem) => (
+                                                <li key={subItem}>
+                                                    <Link
+                                                        href={getLinkPath(item, subItem)}
+                                                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                                                    >
+                                                        {subItem}
+                                                    </Link>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
                                 )}
                             </div>
-                        </li>
-
-                        {/* TV Shows Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownShows(true)}
-                            onMouseOut={() => setDropdownShows(false)}
-                            className="relative cursor-pointer hover:text-gray-300"
-                        >
-                            <button>TV Shows</button>
-                            <div className="relative">
-                                {dropdownShows && (
-                                    <div className="absolute z-50 py-1 bg-gray-800 border border-slate-600 text-white rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            {['Popular', 'Airing Today', 'On TV', 'Top Rated'].map((item, index) => (
-                                                <Link href={`/shows/${item.split(' ')[item.split(' ').length - 1].toLocaleLowerCase()}`} key={index} className="hover:bg-gray-700 px-4 py-1">
-                                                    <li>{item}</li>
-                                                </Link>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-
-                        {/* People Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownPeople(true)}
-                            onMouseOut={() => setDropdownPeople(false)}
-                            className="relative cursor-pointer hover:text-gray-300"
-                        >
-                            <button>People</button>
-                            <div className="relative">
-                                {dropdownPeople && (
-                                    <div className="absolute z-50 py-1 bg-gray-800 border border-slate-600 text-white rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            <Link href="/persons/popular" className="hover:bg-gray-700 px-4 py-1">
-                                                <li>Popular</li>
-                                            </Link>
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-
-                        {/* More Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownMore(true)}
-                            onMouseOut={() => setDropdownMore(false)}
-                            className="relative cursor-pointer hover:text-gray-300"
-                        >
-                            <button>More</button>
-                            <div className="relative">
-                                {dropdownMore && (
-                                    <div className="absolute z-50 py-1 bg-gray-800 border border-slate-600 text-white rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            {['Discussion', 'Leaderboard', 'Support'].map((item, index) => (
-                                                <Link href="#" key={index} className="hover:bg-gray-700 px-4 py-1">
-                                                    <li>{item}</li>
-                                                </Link>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-                    </ul>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Profile Icons */}
-                <div>
-                    <ul className="flex gap-3">
-                        <li>
-                            {/* <Image alt="profile" src="/profile.svg" width={20} height={20} /> */}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
-                            </svg>
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                            </svg>
-                        </li>
-                    </ul>
+
+                {/* Desktop Icons */}
+                <div className="flex items-center space-x-4">
+                    <button className="text-white hover:text-teal-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                        </svg>
+                    </button>
+                    <button className="text-white hover:text-teal-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
             {/* Mobile Navbar */}
-            <div className="flex xl:hidden p-5 text-white justify-between items-center px-5 h-20">
-                {/* Hamburger Menu */}
-                <div className="hamburger" onClick={() => setShowHam(!showHam)}>
-                    {/* <Image src="/hamburger.png" alt="line" width={30} height={30} /> */}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="lg:hidden flex items-center justify-between px-4 py-3">
+                {/* Mobile Menu Button */}
+                <button
+                    onClick={toggleMobileMenu}
+                    className="text-white hover:text-teal-400 transition-colors"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 12h18M3 6h18M3 18h18" />
                     </svg>
+                </button>
 
-                </div>
-
-                {/* Logo */}
-                <Link href="/">
-                    <div className="logo font-extrabold text-4xl sm:text-5xl text-teal-500 hover:text-teal-700 transition-colors duration-300 ease-in-out transform-gpu hover:scale-105 hover:translate-y-1 drop-shadow-xl">
+                {/* Mobile Logo */}
+                <Link href="/" className="flex-shrink-0">
+                    <span className="text-2xl font-bold text-white  hover:text-teal-400 transition-colors">
                         BingeWatch
-                    </div>
-
+                    </span>
                 </Link>
 
-                {/* Profile & Search */}
-                <div className="profile flex gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                    </svg>
+                {/* Mobile Icons */}
+                <div className="flex items-center space-x-4">
+                    <button className="text-white hover:text-teal-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                        </svg>
+                    </button>
+                    <button className="text-white hover:text-teal-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            {/* Mobile Menu Dropdown */}
-            {showHam && (
-                <div ref={menuRef} className=" xl:hidden z-50 fixed top-[4.9rem] left-0 h-screen bg-gray-900 shadow-lg border-none p-4 w-[80%]">
-                    <ul className="flex-col space-y-2 items-center">
-                        {/* Movies Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownMovie(true)}
-                            onMouseOut={() => setDropdownMovie(false)}
-                            className="relative cursor-pointer text-xl text-gray-300"
-                        >
-                            <button>Movies</button>
-                            <div className="relative">
-                                {dropdownMovie && (
-                                    <div className="z-50 py-1 text-lg text-gray-300 rounded-lg transition-all duration-300 ">
-                                        <ul className="flex flex-col">
-                                            {['Popular', 'Now Playing', 'Upcoming', 'Top Rated'].map((item, index) => (
-                                                <Link href={`/movies/${item.split(' ')[item.split(' ').length - 1].toLocaleLowerCase()}`} key={index} className="px-4 py-1">
-                                                    <li>{item}</li>
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+                <div ref={menuRef} className="lg:hidden fixed inset-0 bg-gray-900 bg-opacity-95 z-[9999]">
+                    <div className="flex flex-col h-full">
+                        <div className="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+                            <span className="text-xl font-bold text-white ">Menu</span>
+                            <button
+                                onClick={toggleMobileMenu}
+                                className="text-white hover:text-teal-400 transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-4">
+                            {Object.keys(menuItems).map((item) => (
+                                <div key={item} className="mb-4">
+                                    <button
+                                        onClick={() => toggleDropdown(item)}
+                                        className="w-full text-left text-lg text-white hover:text-teal-400 transition-colors py-2"
+                                    >
+                                        {item}
+                                    </button>
+                                    {activeDropdown === item && (
+                                        <div className="pl-4 mt-2 space-y-2">
+                                            {menuItems[item].map((subItem) => (
+                                                <Link
+                                                    key={subItem}
+                                                    href={getLinkPath(item, subItem)}
+                                                    className="block text-gray-300 hover:text-white transition-colors py-1"
+                                                >
+                                                    {subItem}
                                                 </Link>
                                             ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-
-                        {/* TV Shows Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownShows(true)}
-                            onMouseOut={() => setDropdownShows(false)}
-                            className="relative cursor-pointer text-xl text-gray-300"
-                        >
-                            <button>TV Shows</button>
-                            <div className="relative">
-                                {dropdownShows && (
-                                    <div className="py-1 rounded-lg text-lg text-gray-300 transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            {['Popular', 'Airing Today', 'On TV', 'Top Rated'].map((item, index) => (
-                                                <Link href={`/shows/${item.split(' ')[item.split(' ').length - 1].toLocaleLowerCase()}`} key={index} className="px-4 py-1">
-                                                    <li>{item}</li>
-                                                </Link>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-
-                        {/* People Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownPeople(true)}
-                            onMouseOut={() => setDropdownPeople(false)}
-                            className="relative cursor-pointer text-xl text-gray-300"
-                        >
-                            <button>People</button>
-                            <div className="relative">
-                                {dropdownPeople && (
-                                    <div className="py-1 text-lg text-gray-300 rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            <Link href="/persons/popular" className="px-4 py-1">
-                                                <li>Popular</li>
-                                            </Link>
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-
-                        {/* More Dropdown */}
-                        <li
-                            onMouseOver={() => setDropdownMore(true)}
-                            onMouseOut={() => setDropdownMore(false)}
-                            className="relative cursor-pointer text-xl text-gray-300"
-                        >
-                            <button>More</button>
-                            <div className="relative">
-                                {dropdownMore && (
-                                    <div className="py-1 text-lg text-gray-300 rounded-lg transition-all duration-300">
-                                        <ul className="flex flex-col">
-                                            {['Discussion', 'Leaderboard', 'Support'].map((item, index) => (
-                                                <Link href="#" key={index} className="px-4 py-1">
-                                                    <li>{item}</li>
-                                                </Link>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-                    </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             )}
-        </div>
+        </nav>
     )
 }
 
