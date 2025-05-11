@@ -108,7 +108,7 @@ const TvDetails = ({ params }) => {
 
                     {/* Cast Section */}
                     {cast.length > 0 && (
-                        <section className="cast px-[5vw] my-4">
+                        <section className="cast px-[5vw] mt-4">
                             <div className="topcast">
                                 <h2 className="text-2xl my-4 font-semibold">Top Billed Cast</h2>
 

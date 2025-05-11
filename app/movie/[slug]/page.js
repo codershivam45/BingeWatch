@@ -5,6 +5,7 @@ import { fetchMovieDetails, fetchCast } from '@/utils/movieDetails'
 import Score from '@/components/Score'
 import PersonCard from '@/components/PersonCard'
 import Loading from '@/components/Loading'
+import Card from '@/components/Card'
 
 const MovieDetails = ({ params }) => {
   const { slug } = React.use(params)
@@ -12,6 +13,10 @@ const MovieDetails = ({ params }) => {
 
   const [movie, setMovie] = useState(null)
   const [cast, setCast] = useState([])
+  const [trailers, setTrailers] = useState([])
+  const [similarMovies, setSimilarMovies] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [recommendations, setRecommendations] = useState([])
   const [showFullCast, setShowFullCast] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -27,26 +32,30 @@ const MovieDetails = ({ params }) => {
     if (id) {
       const getMovieDetails = async () => {
         try {
-          const res = await fetchMovieDetails(id)
-          setMovie(res)
+          const [
+            movieData,
+            castData,
+            trailersData,
+            similarData,
+            reviewsData,
+            recommendationsData
+          ] = await Promise.all([
+            fetchMovieDetails(id),
+            fetchCast(id),
+
+          ])
+
+          setMovie(movieData)
+          setCast(castData.cast)
+
         } catch (error) {
-          console.error('Error fetching movie:', error.message)
+          console.error('Error fetching data:', error.message)
         } finally {
           setLoading(false)
         }
       }
 
-      const getCastDetails = async () => {
-        try {
-          const res = await fetchCast(id)
-          setCast(res.cast)
-        } catch (error) {
-          console.error('Error fetching cast:', error.message)
-        }
-      }
-
       getMovieDetails()
-      getCastDetails()
     }
   }, [id])
 
@@ -121,16 +130,32 @@ const MovieDetails = ({ params }) => {
                   {cast.length > 10 && (
                     <button
                       onClick={() => setShowFullCast(!showFullCast)}
-                      aria-label={showFullCast ? "Show less cast" : "Show full cast"}
-                      className="flex justify-center items-center w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-700 text-white font-bold transition-transform transform hover:scale-110"
+                      className="flex items-center justify-center  p-4 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all duration-300 transform hover:scale-110 shadow-lg"
                     >
-                      {showFullCast ? '▲' : '▼'}
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`transform transition-transform duration-300 ${showFullCast ? 'rotate-180' : ''}`}
+                      >
+                        <path
+                          d="M5 12H19M19 12L12 5M19 12L12 19"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </button>
                   )}
                 </div>
               </div>
             </section>
           )}
+
+          
         </div>
       )}
     </div>

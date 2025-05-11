@@ -12,8 +12,8 @@ const Navbar = () => {
     // Menu items data
     const menuItems = {
         Movies: ['Popular', 'Now Playing', 'Upcoming', 'Top Rated'],
-        'TV Shows': ['Popular', 'Airing Today', 'On TV', 'Top Rated'],
-        People: ['Popular'],
+        'Shows': ['Popular', 'Airing Today', 'On TV', 'Top Rated'],
+        Persons: ['Popular'],
         More: ['Discussion', 'Leaderboard', 'Support']
     }
 
@@ -43,7 +43,7 @@ const Navbar = () => {
     // Generate link path
     const getLinkPath = (category, item) => {
         const basePath = category.toLowerCase().replace(' ', '')
-        const itemPath = item.toLowerCase().replace(' ', '-')
+        const itemPath = item.toLowerCase().split(' ')[item.toLowerCase().split(' ').length-1]
         return `/${basePath}/${itemPath}`
     }
 
@@ -65,15 +65,14 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="flex items-center space-x-8">
                         {Object.keys(menuItems).map((item) => (
-                            <div key={item} className="relative">
+                            <div key={item} className="relative group" onClick={()=>{toggleDropdown(item)}} >
                                 <button
-                                    onClick={() => toggleDropdown(item)}
                                     className="text-white hover:text-teal-400 transition-colors"
-                                >
-                                    {item}
+                                    >
+                                       {item}
                                 </button>
                                 {activeDropdown === item && (
-                                    <div className="absolute top-full left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl z-[9999]">
+                                    <div className="absolute   top-full left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl z-[9999]">
                                         <ul className="py-2">
                                             {menuItems[item].map((subItem) => (
                                                 <li key={subItem}>
@@ -82,25 +81,25 @@ const Navbar = () => {
                                                         className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
                                                     >
                                                         {subItem}
-                                                    </Link>
-                                                </li>
+                                                </Link>
+                        </li>
                                             ))}
                                         </ul>
                                     </div>
                                 )}
                             </div>
                         ))}
-                    </div>
+                            </div>
                 </div>
 
 
                 {/* Desktop Icons */}
                 <div className="flex items-center space-x-4">
                     <button className="text-white hover:text-teal-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                        </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                            </svg>
                     </button>
                     <button className="text-white hover:text-teal-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -133,10 +132,10 @@ const Navbar = () => {
                 {/* Mobile Icons */}
                 <div className="flex items-center space-x-4">
                     <button className="text-white hover:text-teal-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                    </svg>
                     </button>
                     <button className="text-white hover:text-teal-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -162,7 +161,7 @@ const Navbar = () => {
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
-                        </div>
+                                    </div>
                         <div className="flex-1 overflow-y-auto p-4">
                             {Object.keys(menuItems).map((item) => (
                                 <div key={item} className="mb-4">
@@ -183,12 +182,12 @@ const Navbar = () => {
                                                     {subItem}
                                                 </Link>
                                             ))}
-                                        </div>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
+                            </div>
                             ))}
-                        </div>
-                    </div>
+                                    </div>
+                            </div>
                 </div>
             )}
         </nav>

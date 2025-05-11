@@ -30,7 +30,7 @@ const Grid = ({ fetchFunction }) => {
             setLoading(false)
         } catch (error) {
             console.error('Error fetching movies:', error.message)
-            setLoading(false) // Ensure loading is false if there's an error
+            setLoading(false) // E  nsure loading is false if there's an error
         }
     }, [fetchFunction])
 

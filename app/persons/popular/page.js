@@ -4,14 +4,15 @@ import Image from 'next/image';
 import { fetchPersonDetails, fetchPersonsByName, fetchPopularPersons } from '@/utils/person';
 import Link from 'next/link';
 import Loading from '@/components/Loading';
+import PersonCard from '@/components/PersonCard';
 
 const Page = () => {
   const [actors, setActors] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [page , setPage] = useState(1);
-  const [totalPages , setTotalPages] =useState(500);
-   const [pageInput, setPageInput] = useState('')
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(500);
+  const [pageInput, setPageInput] = useState('')
 
   const getPopularPerson = async (page) => {
     setLoading(true);
@@ -22,39 +23,39 @@ const Page = () => {
     setSearchQuery('');
     setLoading(false);
   };
+
+  const getPersonByName = async (name, page) => {
+    setLoading(true);
+    const res = await fetchPersonsByName(name, page);
+
+    setActors(res.data);
+    setTotalPages(res.total_pages);
+    // setSearchQuery(name);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    
-    getPopularPerson(page);
-  }, [page]);
-
-
-    const getPersonByName = async (name ,page) =>{
-      setLoading(true);
-      const res = await fetchPersonsByName(name,page);
-
-      setActors(res.data);
-      setTotalPages(res.total_pages);
-      // setSearchQuery(name);
-      setLoading(false);
-    }
-    
-
-
-  const handleSearch = async (e) => {
-    e.preventDefault()
-    const query = e.target.value.toLowerCase();
-    if(query===''){
-      getPopularPerson(1);
+    if(searchQuery===''){
+      getPopularPerson(page);
     }else{
-      getPersonByName(query, 1);
+      getPersonByName(searchQuery, page);
     }
-    setSearchQuery(query);
    
-  };
+  },[page,searchQuery]);
 
-  // const filteredActors = actors.filter(actor =>
-  //   actor.name.toLowerCase().includes(searchQuery)
-  // );
+
+ 
+  // const handleSearch = async (e) => {
+  //   // e.preventDefault()
+  //   const query = searchQuery.toLowerCase();
+  //   if (query === '') {
+  //     getPopularPerson(1);
+  //   } else {
+  //     getPersonByName(query, 1);
+  //   }
+  //   setSearchQuery(query);
+  // };
+
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -106,7 +107,7 @@ const Page = () => {
         <h1 className="text-4xl font-bold mb-6">Popular Actors</h1>
 
         {/* Search Filter */}
-        <div className="mb-6 flex bg-gray-800 items-center rounded-lg  hover:ring-2 ">
+        <div className="mb-6 flex bg-gray-800 items-center rounded-lg  hover:ring-2 " >
           <svg className="h-5 w-5 text-gray-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -114,7 +115,7 @@ const Page = () => {
             type="text"
             placeholder="Search actors..."
             value={searchQuery}
-            onChange={handleSearch}
+            onChange={(e) => { setSearchQuery(e.target.value) }}
             className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
           />
         </div>
@@ -125,15 +126,18 @@ const Page = () => {
             <Loading />
             :
             <>
-              <div className="w-[90vw] place-items-center sm:w-[80vw] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+              <div className="w-[90vw] place-items-center sm:w-[80vw] mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+                {actors.length===0 && 
+                  <div className='flex justify-center'>No Records to Show</div>
+                }
                 {actors.map((actor) => (
                   <Link
                     key={actor.id}
                     href={actor.id ? `/person/${actor.id}-${encodeURIComponent(actor.name)}` : '#'}
                     passHref
                   >
-                    <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden w-[200px] h-[340px] mx-auto">
-                      <div className="w-full h-[300px] relative">
+                    <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden w-[150px] h-[250px] md:w-[200px] md:h-[340px] mx-auto">
+                      <div className="w-full h-[200px] md:h-[300px] relative">
                         <Image
                           src={actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : '/no-avatar.png'}
                           alt={actor.name}
@@ -144,7 +148,10 @@ const Page = () => {
                       </div>
                       <h2 className="mt-2 text-center text-lg font-semibold px-2 truncate">{actor.name}</h2>
                     </div>
+
+                    
                   </Link>
+                  
                 ))}
               </div>
 
@@ -187,8 +194,6 @@ const Page = () => {
               </div>
             </>
         }
-
-
       </div>
     </div>
   );
