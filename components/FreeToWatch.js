@@ -15,7 +15,7 @@ const FreeToWatch = () => {
 
         try {
             const response = await fetchFreeMoviesOrTV({ media_type });
-            console.log(response); // Debugging: Log the response
+            // console.log(response); // Debugging: Log the response
             setData(response);
         } catch (err) {
             console.error("Error fetching data:", err);

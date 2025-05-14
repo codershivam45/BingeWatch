@@ -1,13 +1,17 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+    const router = useRouter();
     const [activeDropdown, setActiveDropdown] = useState(null)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [search, setSearch] = useState('');
+    const [showSearch, setShowSearch] = useState(false)
     const menuRef = useRef(null)
-    const pathname = usePathname()
+    const inputRef = useRef(null)
+
 
     // Menu items data
     const menuItems = {
@@ -43,15 +47,27 @@ const Navbar = () => {
     // Generate link path
     const getLinkPath = (category, item) => {
         const basePath = category.toLowerCase().replace(' ', '')
-        const itemPath = item.toLowerCase().split(' ')[item.toLowerCase().split(' ').length-1]
+        const itemPath = item.toLowerCase().split(' ')[item.toLowerCase().split(' ').length - 1]
         return `/${basePath}/${itemPath}`
     }
 
-    // Check if current page is home
-    const isHomePage = pathname === '/'
+
+    const handleShow = () => {
+        setShowSearch(!showSearch)
+    }
+
+    // Focus input after it's shown
+    useEffect(() => {
+        if (showSearch) {
+            // Small timeout ensures input is rendered before trying to focus
+            setTimeout(() => {
+                inputRef.current?.focus()
+            }, 0)
+        }
+    }, [showSearch])
 
     return (
-        <nav className={`w-full bg-gray-900 shadow-lg z-[9999] ${!isHomePage ? 'sticky top-0' : ''}`}>
+        <nav className={`w-full bg-gray-900 shadow-lg z-[9999] sticky top-0 }`}>
             {/* Desktop Navbar */}
             <div className="hidden lg:flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
                 {/* Logo */}
@@ -65,11 +81,11 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="flex items-center space-x-8">
                         {Object.keys(menuItems).map((item) => (
-                            <div key={item} className="relative group" onClick={()=>{toggleDropdown(item)}} >
+                            <div key={item} className="relative group" onClick={() => { toggleDropdown(item) }} >
                                 <button
                                     className="text-white hover:text-teal-400 transition-colors"
-                                    >
-                                       {item}
+                                >
+                                    {item}
                                 </button>
                                 {activeDropdown === item && (
                                     <div className="absolute   top-full left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl z-[9999]">
@@ -81,25 +97,31 @@ const Navbar = () => {
                                                         className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
                                                     >
                                                         {subItem}
-                                                </Link>
-                        </li>
+                                                    </Link>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
                                 )}
                             </div>
                         ))}
-                            </div>
+                    </div>
                 </div>
+
+
 
 
                 {/* Desktop Icons */}
                 <div className="flex items-center space-x-4">
-                    <button className="text-white hover:text-teal-400 transition-colors">
+                    <button className="text-white hover:text-teal-400 transition-colors" onClick={() => { handleShow() }}>
+                        {!showSearch ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                        </svg> :
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                            </svg>
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>}
                     </button>
                     <button className="text-white hover:text-teal-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -109,6 +131,8 @@ const Navbar = () => {
                     </button>
                 </div>
             </div>
+
+
 
             {/* Mobile Navbar */}
             <div className="lg:hidden flex items-center justify-between px-4 py-3">
@@ -131,11 +155,16 @@ const Navbar = () => {
 
                 {/* Mobile Icons */}
                 <div className="flex items-center space-x-4">
-                    <button className="text-white hover:text-teal-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="16.5" y1="16.5" x2="22" y2="22" />
-                    </svg>
+                    <button className="text-white hover:text-teal-400 transition-colors" onClick={() => { handleShow() }}>
+                        {!showSearch ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                        </svg> :
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>}
+
                     </button>
                     <button className="text-white hover:text-teal-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -161,7 +190,7 @@ const Navbar = () => {
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
-                                    </div>
+                        </div>
                         <div className="flex-1 overflow-y-auto p-4">
                             {Object.keys(menuItems).map((item) => (
                                 <div key={item} className="mb-4">
@@ -182,14 +211,22 @@ const Navbar = () => {
                                                     {subItem}
                                                 </Link>
                                             ))}
-                                    </div>
-                                )}
-                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             ))}
-                                    </div>
-                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
+
+            {showSearch && <div className="searchBar w-full flex p-4 text-white bg-gray-800 border border-gray-800 sm:justify-center sticky top-0 z-30">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                </svg>
+                <input type="text" value={search} ref={inputRef} onChange={(e) => { setSearch(e.target.value) }} onKeyDown={(e) => { if (e.key == "Enter") { router.push(`/search?q=${search}`) } }} placeholder="Search for your favorite movies, shows, or actors" className="text-lg  focus:outline-none w-[90%] bg-transparent text-white placeholder-gray-400" />
+            </div>}
         </nav>
     )
 }

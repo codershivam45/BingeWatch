@@ -4,8 +4,10 @@ import Loading from './Loading'
 import Card from './Card'
 import CardSmall from './CardSmall'
 import { useState, useCallback, useEffect } from 'react'
+import { fetchMoviesByName } from '@/utils/movie'
+import { fetchTVShowsByName } from '@/utils/show'
 
-const Grid = ({ fetchFunction }) => {
+const Grid = ({ fetchFunction , mediaType }) => {
     const [loading, setLoading] = useState(false)
     const [items, setitems] = useState([])
     const [page, setPage] = useState(1)
@@ -15,12 +17,16 @@ const Grid = ({ fetchFunction }) => {
     const [filteredData, setfilteredData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [sortOption, setSortOption] = useState('popularity')
+    
 
     const getData = useCallback(async (page) => {
+        //useCallback is a React Hook that returns a memoized version of a callback function, which only changes if one of the dependencies has changed.
         try {
             setLoading(true)
+            // console.log(fetchFunction)
             const res = await fetchFunction(page)
-            console.log(res)
+            // console.log(mediaType)
+            // console.log(res)
             setitems(res.data)
             setfilteredData(res.data) // Set both items and filtered data initially
             setTotalPages(res.total_pages)
@@ -30,12 +36,36 @@ const Grid = ({ fetchFunction }) => {
             setLoading(false)
         } catch (error) {
             console.error('Error fetching movies:', error.message)
-            setLoading(false) // E  nsure loading is false if there's an error
+            setLoading(false) // Ensure loading is false if there's an error
         }
     }, [fetchFunction])
 
+    const searchByName= async(searchQuery, page)=>{
+
+        if(searchQuery==""){
+            return ;
+        }
+        setLoading(true);
+        let res;
+        console.log(searchQuery)
+        if(mediaType=="movie"){
+            res = await fetchMoviesByName(searchQuery, page);
+        }else{
+            res = await fetchTVShowsByName(searchQuery, page);
+        }
+        console.log(res)
+        setfilteredData(res.data);
+        setTotalPages(res.total_pages);
+        setSearchQuery(searchQuery);
+        setLoading(false);
+    }
     useEffect(() => {
-        getData(page)
+        // if()
+        if(searchQuery!=""){
+            searchByName(searchQuery, page)
+        }else{
+            getData(page)
+        }
     }, [page, getData])
 
     const handlePageChange = (newPage) => {
@@ -72,19 +102,7 @@ const Grid = ({ fetchFunction }) => {
         }
     }
 
-    const handleSearch = (e) => {
-        const query = e.target.value.toLowerCase();
-        setSearchQuery(query);
-
-        const filtered = items.filter(item => {
-            // Check if it's a movie or a show and filter accordingly
-            const searchText = item.title ? item.title.toLowerCase() : item.name.toLowerCase();
-            return searchText.includes(query.toLowerCase());
-        });
-
-
-        setfilteredData(filtered);
-    };
+   
 
     const handleSort = (e) => {
         const option = e.target.value;
@@ -144,9 +162,10 @@ const Grid = ({ fetchFunction }) => {
                         </div>
                         <input
                             type="text"
-                            placeholder="Search movies..."
+                            placeholder={`Search ${mediaType=="movie"? "Movies..." :"Shows..."}`}
                             value={searchQuery}
-                            onChange={handleSearch}
+                            onChange={(e)=>{setSearchQuery(e.target.value)}}
+                            onKeyDown={(e) => { if (e.key == "Enter") { searchByName(searchQuery, page) }}}
                             className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 text-sm sm:text-base"
                         />
                     </div>

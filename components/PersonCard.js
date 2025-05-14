@@ -9,7 +9,7 @@
 
       const getPersonID = async ()=>{
         try{
-          console.log(item)
+          // console.log(item)
           // const res=await fetchPersonId({name:item.name})
           // console.log(res)
           setPersonId(item.id)

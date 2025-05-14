@@ -5,14 +5,18 @@ import { fetchTrendingMovies } from "@/utils/trending";
 import Popular from "@/components/Popular";
 import FreeToWatch from "@/components/FreeToWatch";
 import Loading from "@/components/Loading";
+import {useRouter} from "next/navigation";
 
 export default function Home() {
+  const router=useRouter();
   const [trendingmovie, setTrendingMovie] = useState([]);
   const [isWeek, setIsWeek] = useState(false);
   const [isTVWeek, setIsTVWeek] = useState(false);
   const [trendingtv, setTrendingTV] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [query, setQuery] = useState('');
+  
 
   const fetchMovieORTv = async (media_type, time_window) => {
     setLoading(true);
@@ -43,13 +47,13 @@ export default function Home() {
   return (
     <main className="bg-black text-white">
       {/* Search Bar */}
-      <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0 z-30">
+      {/* <div className="searchBar w-full flex p-4 bg-gray-800 border border-gray-800 sm:justify-center sticky top-0 z-30">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="16.5" y1="16.5" x2="22" y2="22" />
         </svg>
-        <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="text-lg focus:outline-none w-[90%] bg-transparent text-white placeholder-gray-400" />
-      </div>
+        <input type="text" value={search} onChange={(e) => { setSearch(e.target.value) }} onKeyDown={(e) => { if (e.key == "Enter") { router.push(`/search?q=${search}`) } }}  placeholder="Search for your favorite movies, shows, or actors" className="text-lg focus:outline-none w-[90%] bg-transparent text-white placeholder-gray-400" />
+      </div> */}
 
       {/* Welcome Section */}
       <section className="welcome w-[100vw] h-[50vh] text-white bg-top  bg-[url('/hero.png')] flex flex-col justify-between py-12 sm:py-16">
@@ -59,8 +63,8 @@ export default function Home() {
           <div className="text-xl font-semibold">Here you can search for your favorite movies, shows.</div>
         </div>
         <div className="w-[90vw] lg:w-[80vw] rounded-full ml-[5vw] lg:ml-[10vw] bg-gray-800 flex justify-between">
-          <input type="text" placeholder="Search for your favorite movies, shows, or actors" className="p-4 rounded-full w-[70vw] bg-gray-800 text-white focus:outline-none" />
-          <button className="px-8 rounded-full bg-red-700  ">Search</button>
+          <input type="text" value={query} onChange={(e)=>{setQuery(e.target.value)}} onKeyDown={(e)=>{if(e.key=="Enter"){ router.push(`/search?q=${query}`)}}} placeholder="Search for your favorite movies, shows, or actors" className="p-4 rounded-full w-[70vw] bg-gray-800 text-white focus:outline-none" />
+          <button className="px-8 rounded-full bg-red-700 " onClick={() => {console.log("clicked"); router.push(`/search?q=${query}`) }}>Search</button>
         </div>
       </section>
 

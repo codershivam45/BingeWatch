@@ -28,20 +28,23 @@ const Page = () => {
     setLoading(true);
     const res = await fetchPersonsByName(name, page);
 
+    // console.log(res)
+
     setActors(res.data);
     setTotalPages(res.total_pages);
-    // setSearchQuery(name);
+    setSearchQuery(name);
     setLoading(false);
   }
 
   useEffect(() => {
-    if(searchQuery===''){
-      getPopularPerson(page);
-    }else{
-      getPersonByName(searchQuery, page);
-    }
-   
-  },[page,searchQuery]);
+      if(searchQuery!=""){
+        getPersonByName(searchQuery, page)
+      }else
+      {
+        getPopularPerson(page);
+      }
+     
+  },[page]);
 
 
  
@@ -116,6 +119,7 @@ const Page = () => {
             placeholder="Search actors..."
             value={searchQuery}
             onChange={(e) => { setSearchQuery(e.target.value) }}
+            onKeyDown={(e) => {if(e.key=="Enter"){ setPage(1); getPersonByName(searchQuery,1)}}}
             className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
           />
         </div>

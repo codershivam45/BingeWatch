@@ -33,7 +33,7 @@ export async function fetchPersonDetails(id) {
             throw new Error("Person details not found.");
         }
 
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         console.log("Error fetching person details:", error.message);
@@ -54,7 +54,7 @@ export async function fetchPersonCredits(id) {
             throw new Error("No credits found.");
         }
 
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         console.log("Error fetching person credits:", error.message);

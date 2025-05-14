@@ -76,13 +76,13 @@ export async function fetchInTheatersMovies() {
 
 // Fetch Popular Movies
 export async function fetchPopularMovies(page) {
-    console.log("Function called with:", page); // Step 1: Log input
-    console.log("Type of page:", typeof page); // Step 2: Log type
+    // console.log("Function called with:", page); // Step 1: Log input
+    // console.log("Type of page:", typeof page); // Step 2: Log type
 
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movie/popular?api_key=${process.env.API_KEY}&page=${page}`);
         const data = await res.json();
-        console.log("API Response:", data); // Step 3: Log response
+        // console.log("API Response:", data); // Step 3: Log response
         
         return { data: data.results, total_pages: Math.min(500,data.total_pages) };
     } catch (error) {
