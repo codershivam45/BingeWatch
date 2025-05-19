@@ -62,6 +62,56 @@ export async function fetchPersonCredits(id) {
     }
 }
 
+export async function fetchPersonTVCredits(id) {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/person/${id}/tv_credits?api_key=${process.env.API_KEY}`);
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch person TV credits. Status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data || !data.cast) {
+            throw new Error("No TV credits found.");
+        }
+
+        return data;
+    } catch (error) {
+        console.log("Error fetching person TV credits:", error.message);
+        return null; // Return null if TV credits can't be fetched
+    }
+}
+
+
+export async function fetchSocialDetails(id){
+
+    try{
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/person/${id}/external_ids?api_key=${process.env.API_KEY}`)
+
+        if(!res.ok){
+            throw new Error(`Failed to fetch person social details . Status : ${res.status}` )
+        }
+
+        // console.log(res)
+        const data=await res.json()
+
+        const details={
+            "instagram":data.instagram_id,
+            "facebook":data.facebook_id,
+            "twitter":data.twitter_id,
+            "imdb":data.imdb_id
+        }
+        console.log(data)
+        return details;
+    }catch(error){
+        console.log("Error fetching person social details ", error.message)
+        return null
+    }
+}
+
+
+
 export async function fetchPopularPersons(page){
 
         try{
@@ -99,4 +149,8 @@ export const fetchPersonsByName = async (name, page) => {
         console.log('Error fetching persons by name:', error.message);
     }
 };
+
+
+
+
 
