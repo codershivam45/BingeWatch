@@ -18,7 +18,7 @@ const Navbar = () => {
         Movies: ['Popular', 'Now Playing', 'Upcoming', 'Top Rated'],
         'Shows': ['Popular', 'Airing Today', 'On TV', 'Top Rated'],
         Persons: ['Popular'],
-        More: ['Discussion', 'Leaderboard', 'Support']
+        // More: ['Discussion', 'Leaderboard', 'Support']
     }
 
     // Close menu when clicking outside
@@ -123,12 +123,12 @@ const Navbar = () => {
                                 <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>}
                     </button>
-                    <button className="text-white hover:text-teal-400 transition-colors">
+                    {/* <button className="text-white hover:text-teal-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
                         </svg>
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -167,10 +167,10 @@ const Navbar = () => {
 
                     </button>
                     <button className="text-white hover:text-teal-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M12 14c-4 0-6 2-6 6h12c0-4-2-6-6-6z" />
-                        </svg>
+                        </svg> */}
                     </button>
                 </div>
             </div>
